@@ -26,7 +26,7 @@ public class MovieCollection {
             if (menuOption.equals("t")) {
                 searchTitles();
             } else if (menuOption.equals("c")) {
-                //searchCast();
+                searchCast();
             } else if (menuOption.equals("q")) {
                 System.out.println("Goodbye!");
             } else {
@@ -42,7 +42,7 @@ public class MovieCollection {
         try{
             File movieSlop = new File("src//movies_data.csv");
             Scanner reader = new Scanner(movieSlop);
-            int count = 1;
+            int count = 0;
             reader.nextLine();
             while(reader.hasNext()){
                 reader.nextLine();
@@ -52,11 +52,13 @@ public class MovieCollection {
             File movieSlop2 = new File("src//movies_data.csv");
             Scanner reader2 = new Scanner(movieSlop2);
             movieList = new Movie[count];
+            reader2.nextLine();
 
             for (int i = 0; i < count; i++){
                 String data = reader2.nextLine();
                 String[] split = data.split(",");
-                if (i != 0){   movieList[i-1] = new Movie(split[0],split[1],split[2],split[3],Integer.parseInt(split[4]),Double.parseDouble(split[5]));   }
+                //System.out.println(split[0]);
+                movieList[i] = new Movie(split[0],split[1],split[2],split[3],Integer.parseInt(split[4]),Double.parseDouble(split[5]));
             }
         } catch (IOException e){
             System.out.println(e.getMessage() + "\n\n\n" + e.getCause());
@@ -83,9 +85,31 @@ public class MovieCollection {
             System.out.println("Here are the movies that fits your search term\n\n");
                 for (Movie movie: matchMovie){System.out.println(matchMovie.indexOf(movie) + 1 + ". " + movie.getTitle());}
                 System.out.println("Which one are you interested in? ");
-                System.out.println(matchMovie.get(scan.nextInt()));
+                System.out.println(matchMovie.get(scan.nextInt()-1));
 
         }
+    }
+
+    private void searchCast(){
+        System.out.println("What is the name of the actor you're looking for?"); //| |
+        String searchTerm = scan.nextLine();
+        boolean found = false;
+        ArrayList<Movie> matchActors = new ArrayList<>();
+        for (Movie movie: movieList){
+            if (movie.cast.toLowerCase().contains(searchTerm.toLowerCase())){
+                found = true;
+                String[] split = movie.cast.split("|");
+                for (int i = 0; i < split.length; i++){
+                    if (split[i].toLowerCase().toLowerCase().contains(searchTerm.toLowerCase())){
+                        //check if is already in match actor list
+                        System.out.println("hi");
+                    }
+
+                }
+
+            }
+        }
+
     }
 
 
